@@ -2,8 +2,8 @@
 
 import { useTheme } from "next-themes";
 import React from "react";
-import ProfilePic from "../../../public/Group 9.png";
-import ProfilePicDark from "../../../public/Group 10.png";
+import ProfilePic from "../../../public/logoLight.png";
+import ProfilePicDark from "../../../public/logoDark.png";
 import Image from "next/image";
 export const LogoTheme = () => {
   const { theme } = useTheme();
@@ -16,16 +16,16 @@ export const LogoTheme = () => {
       {localStore !== undefined ? (
         localStore === "light" ? (
           <Image
-            width={40}
-            height={40}
+            width={60}
+            height={60}
             src={ProfilePic}
             alt="imageLogo"
             className="text-2xl mr-auto font-bold"
           />
         ) : (
           <Image
-            width={40}
-            height={40}
+            width={60}
+            height={60}
             src={ProfilePicDark}
             alt="imageLogo"
             className="text-2xl mr-auto font-bold"
@@ -33,8 +33,8 @@ export const LogoTheme = () => {
         )
       ) : (
         <Image
-          width={40}
-          height={40}
+          width={60}
+          height={60}
           src={ProfilePic}
           alt="imageLogo"
           className="text-2xl mr-auto font-bold"

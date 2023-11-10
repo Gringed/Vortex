@@ -1,5 +1,6 @@
+"use client"
 import React from "react";
-import { PostHome, getPosts } from "../../query/post.query";
+import { PostHome } from "../../query/post.query";
 import { PostWrapper } from "./PostWrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ type PostProps = {
   post: PostHome;
 };
 export const Post = ({ post }: PostProps) => {
+  
   return (
     <div className="">
       <PostWrapper

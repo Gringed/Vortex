@@ -5,6 +5,8 @@ import { ThemeProvider } from "./src/theme/ThemeProvider";
 import clsx from "clsx";
 import { Header } from "./src/features/layout/Header";
 import { Footer } from "./src/features/layout/Footer";
+import { Sidebar } from "./src/features/layout/Sidebar";
+import Utils from "./(home)/Utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +27,12 @@ export default function RootLayout({ children, modal }: LayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col h-full">
             <Header />
-            <div className="flex mt-7 py-10">{children}</div>
+            <div className="flex h-full mt-7 pt-10">
+              <div className="flex w-full flex-wrap gap-7">
+                <Sidebar />
+                {children}
+              </div>
+            </div>
             <Footer />
           </div>
           {modal}

@@ -23,7 +23,7 @@ export const PostWrapper = ({
   const postHeader = (
     <div className="flex flex-row items-center justify-between">
       <div className="flex gap-3 items-center">
-        <div className="flex gap-2 items-center" data-popover-target={postId}>
+        <div className="flex gap-2 items-center" data-popover-target={author.id} data-tooltip-trigger="hover">
           <Link
             href={`/profile/${author.username}`}
             className="text-sm text-foreground font-bold mr-auto"
@@ -37,7 +37,7 @@ export const PostWrapper = ({
         <div className="flex gap-1 items-center text-sm">
           <span className=" text-xs text-muted-foreground">•</span>
           {createdAt && (
-            <Link href={`/post/${postId}`} className="text-sm text-muted-foreground">
+            <Link href={`/posts/${postId}`} className="text-sm text-muted-foreground">
               {formatDate(new Date(createdAt))}
             </Link>
           )}
@@ -45,7 +45,7 @@ export const PostWrapper = ({
       </div>
       <div
         data-popover
-        id={postId}
+        id={author.id}
         role="tooltip"
         className="absolute z-50 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-500 bg-white border border-muted rounded-lg shadow-slate-400 shadow-sm opacity-0 dark:text-gray-400 dark:bg-secondary dark:shadow-lime-500 dark:border-lime-100"
       >
