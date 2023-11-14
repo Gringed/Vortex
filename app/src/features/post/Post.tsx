@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { PostHome } from "../../query/post.query";
+import {  PostHome } from "../../query/post.query";
 import { PostWrapper } from "./PostWrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,22 +8,25 @@ import { Heart, MessageCircle, Share } from "lucide-react";
 
 type PostProps = {
   post: PostHome;
+  parent?: Boolean
 };
-export const Post = ({ post }: PostProps) => {
+export const Post = ({ post, parent }: PostProps) => {
   
   return (
-    <div className="">
+    <div className={`${!parent && "border-b border-accent-foreground"}`}>
       <PostWrapper
-        author={post.author}
+        author={post.user}
         postId={post.id}
         createdAt={post.createdAt}
+        parent={parent}
+        className={parent ? " shadow-none" : "shadow"}
       >
         <Link href={`/posts/${post.id}`} className=" font-light whitespace-pre-line">
-          {post.body.split(" ").map((str) => {
+          {post.content.split(" ").map((str) => {
             if (str.startsWith("@")) {
               return (
                 <span key={str} className={"text-primary"}>
-                  <Link href={`/profile/${str.split("@")[1]}`}>{str}</Link>{" "}
+                  <Link href={`/users/${str.split("@")[1]}`}>{str}</Link>{" "}
                 </span>
               );
             }

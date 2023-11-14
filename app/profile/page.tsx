@@ -1,9 +1,68 @@
-import React from 'react'
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Profile } from "../users/[userId]/Profile";
+import { getAuthSession } from "@/lib/auth";
+import { getUserProfile } from "../src/query/user.query";
+import { buttonVariants } from "@/components/ui/button";
+import { Post } from "../src/features/post/Post";
+import Utils from "../(home)/Utils";
 
-const page = () => {
+export default async function User({
+  params,
+}: {
+  params: {
+    userId: string;
+  };
+}) {
+  const session = await getAuthSession();
+
+  if (!session?.user._id) {
+    notFound();
+  }
+
+  const user = await getUserProfile(session.user._id);
+
+  if (!user) {
+    notFound();
+  }
+
   return (
-    <div>page</div>
-  )
+    <>
+      <div
+        className="divide-y divide-muted border-r border-l border-secondary"
+        style={{ flex: 1 }}
+      >
+        <div
+          className="container backdrop-blur-md bg-gradient-to-t from-background border-b-2 border-secondary z-10 py-6 sticky"
+          style={{ top: "75px" }}
+        >
+          <div className="">
+            <h1 className="text-2xl font-bold">Profil</h1>
+          </div>
+        </div>
+        <div className="container">
+          <Utils />
+          <Profile user={user} />
+          <div className="mt-4 border-b border-accent pb-4">
+            <Link
+              href="/profile/edit"
+              className={buttonVariants({
+                variant: "outline",
+              })}
+            >
+              Edit profile
+            </Link>
+          </div>
+        </div>
+        <div className="divide-y divide-accent">
+          {user.posts.map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
+        </div>
+      </div>
+      <div className="flex-1  break-all ">
+        <h2>{JSON.stringify(session?.user)}</h2>
+      </div>
+    </>
+  );
 }
-
-export default page

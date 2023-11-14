@@ -27,7 +27,7 @@ export default function RootLayout({ children, modal }: LayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col h-full">
             <Header />
-            <div className="flex h-full mt-7 pt-10">
+            <div className="flex h-full mt-14 pt-4">
               <div className="flex w-full flex-wrap gap-7">
                 <Sidebar />
                 {children}

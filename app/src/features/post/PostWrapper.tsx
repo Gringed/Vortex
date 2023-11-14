@@ -7,11 +7,13 @@ import { MoreHorizontal } from "lucide-react";
 import { formatDate } from "../../lib/formatDate";
 import Link from "next/link";
 import "flowbite";
+
 type PostWrapperProps = PropsWithChildren<{
-  author: PostHome["author"];
+  author: PostHome["user"];
   createdAt?: Date;
   className?: string;
   postId?: string;
+  parent?: Boolean;
 }>;
 export const PostWrapper = ({
   className,
@@ -19,13 +21,19 @@ export const PostWrapper = ({
   createdAt,
   postId,
   children,
+  parent,
 }: PostWrapperProps) => {
+
   const postHeader = (
     <div className="flex flex-row items-center justify-between">
       <div className="flex gap-3 items-center">
-        <div className="flex gap-2 items-center" data-popover-target={author.id} data-tooltip-trigger="hover">
+        <div
+          className="flex gap-2 items-center"
+          data-popover-target={postId}
+          data-tooltip-trigger="hover"
+        >
           <Link
-            href={`/profile/${author.username}`}
+            href={`/users/${author.username}`}
             className="text-sm text-foreground font-bold mr-auto"
           >
             {author.name}
@@ -37,7 +45,10 @@ export const PostWrapper = ({
         <div className="flex gap-1 items-center text-sm">
           <span className=" text-xs text-muted-foreground">•</span>
           {createdAt && (
-            <Link href={`/posts/${postId}`} className="text-sm text-muted-foreground">
+            <Link
+              href={`/posts/${postId}`}
+              className="text-sm text-muted-foreground"
+            >
               {formatDate(new Date(createdAt))}
             </Link>
           )}
@@ -45,14 +56,14 @@ export const PostWrapper = ({
       </div>
       <div
         data-popover
-        id={author.id}
+        id={postId}
         role="tooltip"
         className="absolute z-50 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-500 bg-white border border-muted rounded-lg shadow-slate-400 shadow-sm opacity-0 dark:text-gray-400 dark:bg-secondary dark:shadow-lime-500 dark:border-lime-100"
       >
         <div className="p-3">
           <div className="flex items-center justify-between mb-2">
-            <Link href={`/profile/${author.id}`}>
-              <Avatar className="w-12 h-12">
+            <Link href={`/users/${author.id}`}>
+              <Avatar size="sm">
                 {author?.image ? (
                   <AvatarImage src={author?.image} alt={author?.username} />
                 ) : null}
@@ -71,10 +82,10 @@ export const PostWrapper = ({
             </div>
           </div>
           <p className="text-base font-semibold leading-none text-gray-900 dark:text-white">
-            <a href={`/profile/${author.id}`}>{author.name}</a>
+            <a href={`/users/${author.id}`}>{author.name}</a>
           </p>
           <p className="mb-3 text-sm font-normal">
-            <a href={`/profile/${author.id}`} className="hover:underline">
+            <a href={`/users/${author.id}`} className="hover:underline">
               @{author.username}
             </a>
           </p>
@@ -84,7 +95,7 @@ export const PostWrapper = ({
                   if (str.startsWith("@")) {
                     return (
                       <span key={str} className={"text-primary"}>
-                        <Link href={`/profile/${str.split("@")[1]}`}>
+                        <Link href={`/users/${str.split("@")[1]}`}>
                           {str}
                         </Link>{" "}
                       </span>
@@ -98,7 +109,7 @@ export const PostWrapper = ({
             <li className="mr-2">
               <a href="#" className="hover:underline">
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  799
+                  {author?._count?.followed}
                 </span>
                 <span> Following</span>
               </a>
@@ -106,9 +117,9 @@ export const PostWrapper = ({
             <li>
               <a href="#" className="hover:underline">
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  3,758
+                  {author?._count?.followers}
                 </span>
-                <span>Followers</span>
+                <span> Followers</span>
               </a>
             </li>
           </ul>
@@ -124,18 +135,23 @@ export const PostWrapper = ({
     <>
       <div
         className={clsx(
-          "flex  shadow item-start w-full flex-row p-6",
+          "flex item-start w-full flex-row p-6",
           className
         )}
       >
-        <Avatar className="w-12 h-12">
-          {author?.image ? (
-            <AvatarImage src={author?.image} alt={author?.username} />
-          ) : null}
-          <AvatarFallback>
-            {author.username.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <div className="relative flex justify-center">
+          {parent && (
+            <div className="h-5/6 w-0.5 mt-14 absolute m-auto bg-muted-foreground"></div>
+          )}
+          <Avatar size="sm" className="w-12 h-12 flex">
+            {author?.image ? (
+              <AvatarImage src={author?.image} alt={author?.username} />
+            ) : null}
+            <AvatarFallback>
+              {author.username.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </div>
         <div className="ml-4 flex w-full flex-col gap-2">
           {postId ? <div>{postHeader}</div> : postHeader}
           {children}

@@ -15,15 +15,23 @@ const userQuery = {
 } satisfies Prisma.usersSelect;
 
 export const getUserProfile = cache((userId: string) => {
-  return prisma.users.findUnique({
+  return prisma.users.findFirst({
     where: {
-      id: userId,
+      OR: [
+        {
+          username: userId
+        },
+        {
+          id: userId
+        }
+      ]
     },
     select: {
       ...userQuery,
       _count: {
         select: {
-          followeds: true,
+          followed:true,
+          followers:true,
           likes: true,
         },
       },
@@ -36,7 +44,7 @@ export const getUserProfile = cache((userId: string) => {
           createdAt: 'desc',
         },
       },
-      followeds: {
+      followed: {
         select: {
           follower: {
             select: {

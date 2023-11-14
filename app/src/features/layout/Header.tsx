@@ -11,7 +11,7 @@ export const Header = async () => {
   const session = await getAuthSession();
   return (
     <>
-      <div className="border-b-4 border-b-primary fixed top-0 w-full bg-background z-10">
+      <div className="border-b-4 border-b-primary fixed top-0 w-full bg-background z-20">
         <div className="container flex items-center py-3 max-w-4xl m-auto gap-1">
           <LogoTheme />
           {session?.user ? <UserProfile /> : <LoginButton />}

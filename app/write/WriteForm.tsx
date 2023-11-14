@@ -22,7 +22,7 @@ const FormScheme = z.object({
 export type WritePostFormType = z.infer<typeof FormScheme>;
 
 type WritePostFormProps = {
-  user: users;
+  user: any;
   onSubmit: (values: WritePostFormType) => Promise<string | void>;
 };
 
@@ -35,7 +35,6 @@ export const WriteForm = ({ user, onSubmit }: WritePostFormProps) => {
   return (
     <div className="w-full">
       <PostWrapper author={user} className="w-full">
-        
         <Form
           form={form}
           onSubmit={async (values) => {
@@ -50,7 +49,11 @@ export const WriteForm = ({ user, onSubmit }: WritePostFormProps) => {
             name="content"
             render={({ field }) => (
               <FormItem>
-                <ContentTextArea {...field} rows={4} />
+                <ContentTextArea
+                  className="border border-accent rounded focus:outline-none focus:border-muted-foreground focus:ring-current transition-all duration-200"
+                  {...field}
+                  rows={4}
+                />
                 <FormMessage />
               </FormItem>
             )}

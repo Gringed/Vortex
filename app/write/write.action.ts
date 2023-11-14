@@ -14,8 +14,8 @@ export const createPost = async (values: WritePostFormType) => {
 
   const post = await prisma.post.create({
     data: {
-      body: values.content,
-      authorId: session.user._id
+      content: values.content,
+      userId: session.user._id,
     },
   });
 

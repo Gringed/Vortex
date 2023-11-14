@@ -6,7 +6,7 @@ import { getAuthSession } from "@/lib/auth";
 
 export default async function page() {
   const session = await getAuthSession();
-    
+
   if (!session?.user._id) {
     await signIn();
   }
