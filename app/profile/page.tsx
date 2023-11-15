@@ -40,19 +40,10 @@ export default async function User({
             <h1 className="text-2xl font-bold">Profil</h1>
           </div>
         </div>
-        <div className="container">
+        <div className="">
           <Utils />
           <Profile user={user} />
-          <div className="mt-4 border-b border-accent pb-4">
-            <Link
-              href="/profile/edit"
-              className={buttonVariants({
-                variant: "outline",
-              })}
-            >
-              Edit profile
-            </Link>
-          </div>
+          
         </div>
         <div className="divide-y divide-accent">
           {user.posts.map((post) => (

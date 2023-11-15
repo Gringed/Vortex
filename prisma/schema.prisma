@@ -55,6 +55,9 @@ model users {
   bio       String?
   link      String?
   image     String?
+  banner    String?
+  bannerColor String?
+  userDecoration  String?
   address   Address?
   posts     Post[]
   isAdmin   Role       @default(USER)

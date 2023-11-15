@@ -11,7 +11,8 @@ const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full'
       default: 'h-10 w-10',
       sm: 'h-6 w-6',
       lg: 'h-20 w-20',
-      xl: 'h-50 w-50'
+      xl: 'h-50 w-50',
+      none: ''
     },
   },
   defaultVariants: {
@@ -21,7 +22,7 @@ const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full'
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & {
-    size: 'sm' | 'default' | 'lg' | 'xl';
+    size: 'sm' | 'default' | 'lg' | 'xl' | 'none';
   }
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root

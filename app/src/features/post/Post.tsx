@@ -8,9 +8,10 @@ import { Heart, MessageCircle, Share } from "lucide-react";
 
 type PostProps = {
   post: PostHome;
-  parent?: Boolean
+  parent?: Boolean;
+  userId?: String
 };
-export const Post = ({ post, parent }: PostProps) => {
+export const Post = ({ post, parent, userId }: PostProps) => {
   
   return (
     <div className={`${!parent && "border-b border-accent-foreground"}`}>
@@ -20,6 +21,7 @@ export const Post = ({ post, parent }: PostProps) => {
         createdAt={post.createdAt}
         parent={parent}
         className={parent ? " shadow-none" : "shadow"}
+        userId={userId}
       >
         <Link href={`/posts/${post.id}`} className=" font-light whitespace-pre-line">
           {post.content.split(" ").map((str) => {

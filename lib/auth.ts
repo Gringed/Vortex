@@ -22,16 +22,27 @@ export const authOptions: (
       clientSecret: String(process.env.DISCORD_CLIENT_SECRET),
       profile(profile) {
         console.log({ profile });
-        let userAvatar = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`
-        return{
+        let userAvatar = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`;
+        let userBanner = profile.banner
+          ? `https://cdn.discordapp.com/banners/${profile.id}/${profile.banner}.png`
+          : null;
+          let userDecoration = profile.avatar_decoration_data
+          ? `https://cdn.discordapp.com/avatar-decorations/${profile.id}/${profile.avatar_decoration_data}.png`
+          : null;
+        return {
           id: profile.id,
           name: profile.username,
           username: profile.username,
           email: profile.email,
           image: userAvatar,
+          banner: userBanner,
+          bannerColor: profile.banner_color,
+          userDecoration: userDecoration,
           verified: profile.verified,
-          createdAt: new Date(new Date().toISOString())
-        }
+          isAdmin: "USER",
+          isPremium: false,
+          createdAt: new Date(new Date().toISOString()),
+        };
       },
     }),
     GitHubProvider({
@@ -45,7 +56,7 @@ export const authOptions: (
         return session;
       }
       session.user._id = user.id;
-      session.user.name = user.name
+      session.user.name = user.name;
       return session;
     },
   },

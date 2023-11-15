@@ -10,9 +10,11 @@ import { ObjectId } from "mongodb";
 import { notFound } from "next/navigation";
 import React from "react";
 import { createPostReply } from "./reply/write-reply.action";
-import { prisma } from "@/lib/prisma";
+
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { LoginButton } from "@/app/src/features/layout/auth/LoginButton";
+import { prisma } from "@/lib/prisma";
 
 export default async function PostView({
   params,
@@ -27,11 +29,13 @@ export default async function PostView({
   let user: any;
   if (ObjectId.isValid(params.postId)) {
     post = await getPostView(params.postId, session?.user._id);
-    user = await prisma.users.findUnique({
-      where: {
-        id: session?.user._id,
-      },
-    });
+    if (session) {
+      user = await prisma.users.findUnique({
+        where: {
+          id: session?.user._id,
+        },
+      });
+    }
     if (post?.parentId) {
       parentPost = await getPostView(post?.parentId, session?.user._id);
     }
@@ -67,19 +71,33 @@ export default async function PostView({
         )}
         <Utils />
 
-        <Post post={post} key={post.id} />
+        <Post post={post} key={post.id} userId={session?.user._id} />
         <div className="">
           <div className="divider div-transparent div-arrow-down"></div>
-          <div className="w-full">
-            <WriteForm
-              user={user}
-              onSubmit={async (values) => {
-                "use server";
-                const result = await createPostReply(parentPost?.id, values);
-                return result;
-              }}
-            />
-          </div>
+          {user ? (
+            <>
+              <div className="w-full">
+                <WriteForm
+                  user={user}
+                  onSubmit={async (values) => {
+                    "use server";
+                    const result = await createPostReply(
+                      parentPost?.id,
+                      values
+                    );
+                    return result;
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="w-full my-5">
+              <div className="container flex flex-col gap-3 justify-center items-center">
+                <span>Vous devez être connecté pour répondre à ce Layer</span>
+                <LoginButton />
+              </div>
+            </div>
+          )}
           {post.replies.map((reply: any) => {
             return <Post post={reply} key={reply.id} />;
           })}

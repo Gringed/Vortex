@@ -1,10 +1,10 @@
-
-import { signIn } from 'next-auth/react';
-import { ReplyModal } from './ReplyModal';
-import { getAuthSession } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
-import { getPost } from '@/app/src/query/post.query';
-import { createPostReply } from '@/app/posts/[postId]/reply/write-reply.action';
+import { signIn } from "next-auth/react";
+import { ReplyModal } from "./ReplyModal";
+import { getAuthSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { getPost } from "@/app/src/query/post.query";
+import { createPostReply } from "@/app/posts/[postId]/reply/write-reply.action";
+import { LoginButton } from "@/app/src/features/layout/auth/LoginButton";
 
 export default async function page({
   params,
@@ -15,22 +15,16 @@ export default async function page({
 }) {
   const session = await getAuthSession();
 
-  if (!session?.user._id) {
-    await signIn();
-    return null;
+  let user: any;
+  if (session) {
+    user = await prisma.users.findUnique({
+      where: {
+        id: session?.user._id,
+      },
+    });
   }
 
-  const user = await prisma.users.findUnique({
-    where: {
-      id: session?.user._id,
-    },
-  });
-
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  const post = await getPost(params.postId, session.user._id);
+  const post = await getPost(params.postId, session?.user._id);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -40,7 +34,7 @@ export default async function page({
     <ReplyModal
       user={user}
       createPostReply={async (values) => {
-        'use server';
+        "use server";
         return createPostReply(post.id, values);
       }}
     />

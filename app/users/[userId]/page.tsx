@@ -2,8 +2,7 @@ import { getUserProfile } from "@/app/src/query/user.query";
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { Profile } from "./Profile";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -27,7 +26,7 @@ export const generateMetaData = async ({
   }
 
   return {
-    title: `${user.name} (@${user.username})`,
+    title: `${user.name} (@${user.username})`
   };
 };
 export default async function User({
@@ -53,6 +52,10 @@ export default async function User({
     : false;
 
   const isCurrent = session?.user._id === user.id;
+
+   if(isCurrent){
+    redirect('/profile')
+  } 
   return (
     <>
       <div
@@ -72,16 +75,6 @@ export default async function User({
           <Profile user={user} />
           <div className="mt-4 border-b border-accent pb-4">
             {isCurrent ? (
-              <Link
-                href="/profile/edit"
-                className={buttonVariants({
-                  variant: "outline",
-                })}
-              >
-                Edit profile
-              </Link>
-            ) : null}
-            {!isCurrent ? (
               <form>
                 <Button
                   formAction={async () => {

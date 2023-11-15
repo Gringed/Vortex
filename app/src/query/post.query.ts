@@ -1,3 +1,5 @@
+
+
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
@@ -47,7 +49,7 @@ export const postSelectQuery = (userId?: string) =>
         userId: true,
       },
       where: {
-        userId: userId ?? "error",
+        userId: userId,
       },
     },
   } satisfies Prisma.PostSelect);

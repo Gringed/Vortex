@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import { UserProfile } from "../../src/query/user.query";
+import Image from "next/image";
 
 const removeHttp = (url: string) => {
   return url.replace(/(^\w+:|^)\/\//, "");
@@ -15,28 +16,48 @@ type ProfileProps = PropsWithChildren<{
 export const Profile = ({ user, children }: ProfileProps) => {
   return (
     <>
-      <div className=" w-full relative bg-black p-4 h-40"></div>
-      <div className=" container mt-10">
-        <div className="flex absolute top-60  gap-2 items-start justify-between">
-          <Avatar size="xl">
-            {user.image ? (
-              <AvatarImage src={user.image} alt={user.username} />
-            ) : null}
-            <AvatarFallback>{user.name?.slice(0, 2)}</AvatarFallback>
-          </Avatar>
+      <div
+        className=" w-full relative h-48 shadow-lg"
+        style={
+          user?.bannerColor
+            ? { background: user?.bannerColor }
+            : { background: "black" }
+        }
+      >
+        {user?.banner && (
+          <img
+            src={user.banner}
+            className="w-full h-full object-cover"
+            alt="Img profile"
+          />
+        )}
+      </div>
+      <div className=" container flex flex-col gap-3">
+        <div className="flex justify-between my-4">
+          <div className=" -mt-24  relative">
+            {user?.userDecoration && <img src={user.userDecoration} width={100} height={100}/>}
+          </div>
+          <Link
+            href="/profile/edit"
+            className={
+              "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent shadow-sm hover:bg-primary hover:text-accent-foreground h-9 px-4 py-2"
+            }
+          >
+            Editer
+          </Link>
         </div>
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col">
           <h3 className="text-2xl font-bold">{user.name}</h3>
-          <p>{user?.username}</p>
+          <p className="text-gray-600">@{user?.username}</p>
         </div>
         {user.bio ? (
-          <p>{user.bio}</p>
+          <p className="text-muted-foreground">{user.bio}</p>
         ) : (
           <p className="text-muted-foreground">no bio</p>
         )}
         <div className="flex items-center gap-2 mt-4">
-          <div className="flex -space-x-2">
-            {user.followed.map((f) => (
+          {user.followed.map((f) => (
+            <div className="flex -space-x-2">
               <Avatar
                 size="sm"
                 className="border-2 border-background"
@@ -51,16 +72,14 @@ export const Profile = ({ user, children }: ProfileProps) => {
                   ).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-            ))}
-          </div>
-          <p className="text-muted-foreground">{" ‧ "}</p>
+            </div>
+          ))}
           <p className="text-muted-foreground">
             {user._count.followed} followers
           </p>
 
           {user.link ? (
             <>
-              <p className="text-muted-foreground">{" ‧ "}</p>
               <Link
                 className="text-muted-foreground hover:underline"
                 href={user.link}

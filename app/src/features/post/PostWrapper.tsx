@@ -14,6 +14,7 @@ type PostWrapperProps = PropsWithChildren<{
   className?: string;
   postId?: string;
   parent?: Boolean;
+  userId?:String
 }>;
 export const PostWrapper = ({
   className,
@@ -22,6 +23,7 @@ export const PostWrapper = ({
   postId,
   children,
   parent,
+  userId
 }: PostWrapperProps) => {
 
   const postHeader = (
@@ -33,7 +35,7 @@ export const PostWrapper = ({
           data-tooltip-trigger="hover"
         >
           <Link
-            href={`/users/${author.username}`}
+            href={`/users/${author.id}`}
             className="text-sm text-foreground font-bold mr-auto"
           >
             {author.name}
@@ -63,7 +65,7 @@ export const PostWrapper = ({
         <div className="p-3">
           <div className="flex items-center justify-between mb-2">
             <Link href={`/users/${author.id}`}>
-              <Avatar size="sm">
+              <Avatar size="default">
                 {author?.image ? (
                   <AvatarImage src={author?.image} alt={author?.username} />
                 ) : null}
@@ -73,12 +75,15 @@ export const PostWrapper = ({
               </Avatar>
             </Link>
             <div>
-              <button
+              {author.id !== userId && (
+
+                <button
                 type="button"
                 className="text-white bg-primary focus:ring-4  font-medium rounded-lg text-xs px-3 py-1.5  focus:outline-none dark:focus:ring-blue-800"
-              >
+                >
                 Suivre
               </button>
+                )}
             </div>
           </div>
           <p className="text-base font-semibold leading-none text-gray-900 dark:text-white">
@@ -95,9 +100,7 @@ export const PostWrapper = ({
                   if (str.startsWith("@")) {
                     return (
                       <span key={str} className={"text-primary"}>
-                        <Link href={`/users/${str.split("@")[1]}`}>
-                          {str}
-                        </Link>{" "}
+                        <Link href={`/users/${str.split("@")[1]}`}>{str}</Link>{" "}
                       </span>
                     );
                   }
@@ -133,12 +136,7 @@ export const PostWrapper = ({
   );
   return (
     <>
-      <div
-        className={clsx(
-          "flex item-start w-full flex-row p-6",
-          className
-        )}
-      >
+      <div className={clsx("flex item-start w-full flex-row p-6", className)}>
         <div className="relative flex justify-center">
           {parent && (
             <div className="h-5/6 w-0.5 mt-14 absolute m-auto bg-muted-foreground"></div>

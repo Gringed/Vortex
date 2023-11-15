@@ -1,13 +1,14 @@
 import { getAuthSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+
 import React from "react";
 import { getPosts } from "../src/query/post.query";
 import { Post } from "../src/features/post/Post";
 import Utils from "./Utils";
-import { getUserProfile } from "../src/query/user.query";
+
 
 export const Home = async () => {
   const session = await getAuthSession();
+
   const posts = await getPosts(session?.user._id);
 
   return (
@@ -23,7 +24,7 @@ export const Home = async () => {
         </div>
         <Utils />
         {posts.map((p) => (
-          <Post post={p} key={p.id} />
+          <Post post={p} key={p.id} userId={session?.user._id}/>
         ))}
       </div>
       <div className="flex-1  break-all ">
