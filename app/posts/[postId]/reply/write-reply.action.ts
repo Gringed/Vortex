@@ -3,6 +3,7 @@
 import { WritePostFormType } from "@/app/write/WriteForm";
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const createPostReply = async (
@@ -27,8 +28,10 @@ export const createPostReply = async (
   // fake timer because sqlite is too fast
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
+  revalidatePath("/");
+  revalidatePath(`/posts/${parentId}`);
   try {
-    redirect(`/posts/${post.parentId}`);
+    redirect(`/posts/${post.parentId}`) + revalidatePath(`/posts/${post.parentId}`)
   } catch (error) {
     return `/posts/${post.parentId}`;
   }

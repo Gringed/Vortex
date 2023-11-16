@@ -62,6 +62,21 @@ export const getUserProfile = cache((userId: string) => {
           createdAt: 'desc',
         },
       },
+      followers: {
+        select: {
+          followed: {
+            select: {
+              id: true,
+              image: true,
+              username: true,
+            },
+          },
+        },
+        take: 3,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
     },
   });
 });

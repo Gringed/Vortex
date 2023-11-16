@@ -22,9 +22,9 @@ const FormScheme = z.object({
   bio: z.string().max(500),
   link: z
     .string()
-    .max(50)
+    
 
-    .regex(/^(https?:\/\/)?([\w-]+\.)?\w{0,6}(\/[\w \.-]*)*\/?(\?\w+=\w+)?$/, {
+    .regex(/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/, {
       message: 'Please enter a valid domain',
     }),
 });
@@ -56,8 +56,8 @@ export const ProfileForm = ({ onSubmit, user }: ProfileFormProps) => {
         const url = await onSubmit(values);
 
         if (url) {
-          router.push(url);
           router.refresh();
+          router.push("/profile");
         }
       }}
     >

@@ -3,6 +3,7 @@
 import { getAuthSession } from '@/lib/auth';
 import { ProfileFormType } from './ProfileForm';
 import { prisma } from '@/lib/prisma';
+import { redirect } from 'next/navigation';
 
 export const editProfile = async (values: ProfileFormType) => {
   const session = await getAuthSession();
@@ -22,5 +23,9 @@ export const editProfile = async (values: ProfileFormType) => {
 
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  return '/profile';
+  try {
+    redirect(`/profile`);
+  } catch (error) {
+    return `/profile`;
+  }
 };

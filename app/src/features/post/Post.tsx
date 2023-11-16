@@ -5,6 +5,7 @@ import { PostWrapper } from "./PostWrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share } from "lucide-react";
+import { LikeButton } from "./LikeButton";
 
 type PostProps = {
   post: PostHome;
@@ -48,12 +49,7 @@ export const Post = ({ post, parent, userId }: PostProps) => {
             </div>
           </div>
           <div className="flex items-center gap-2 hover:text-red-500 transition-all duration-300">
-            <Link
-              className="custom-rounded bg-secondary hover:bg-accent text-foreground hover:text-red-500 p-2 flex gap-1 items-center"
-              href={`/posts/${post.id}`}
-            >
-              <Heart size={20} />
-            </Link>
+           <LikeButton postId={post.id} isLiked={post.likes.length > 0} />
             <div className="text-custom-rounded text-muted-foreground text-sm">
               {post._count.likes}
             </div>

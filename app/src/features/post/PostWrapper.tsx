@@ -129,9 +129,7 @@ export const PostWrapper = ({
         </div>
         <div data-popper-arrow></div>
       </div>
-      <button>
-        <MoreHorizontal size={20} />
-      </button>
+      
     </div>
   );
   return (

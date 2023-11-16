@@ -25,3 +25,16 @@ export const formatDate = (date: Date | string) => {
   }
   return "now";
 };
+
+export const birthdayParse = (num: any) => {
+  let options: object = { 
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  };
+
+  let dateparser: any = Date.parse(num);
+
+  let date = new Date(dateparser).toLocaleDateString("FR", options);
+  return date.toString();
+};

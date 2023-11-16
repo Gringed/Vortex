@@ -1,7 +1,7 @@
 import { getUserProfile } from "@/app/src/query/user.query";
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Metadata } from "next";
+import { Metadata, ResolvedMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { Profile } from "./Profile";
@@ -15,18 +15,12 @@ export const generateMetaData = async ({
 }: {
   params: {
     userId: string;
-  };
+  },
+  parent: ResolvedMetadata
 }): Promise<Metadata> => {
-  const user = await getUserProfile(params.userId);
-
-  if (!user) {
-    return {
-      title: "User not found",
-    };
-  }
-
+  
   return {
-    title: `${user.name} (@${user.username})`
+    title: `Test`
   };
 };
 export default async function User({
@@ -53,9 +47,7 @@ export default async function User({
 
   const isCurrent = session?.user._id === user.id;
 
-   if(isCurrent){
-    redirect('/profile')
-  } 
+  
   return (
     <>
       <div
@@ -63,7 +55,7 @@ export default async function User({
         style={{ flex: 1 }}
       >
         <div
-          className="container backdrop-blur-md bg-gradient-to-t from-background border-b-2 border-secondary z-10 py-6 sticky"
+          className="container backdrop-blur-md bg-gradient-to-t from-background border-b-2 border-secondary z-30 py-6 sticky"
           style={{ top: "75px" }}
         >
           <div className="">
