@@ -52,7 +52,7 @@ export default async function User({
         </div>
       </div>
       <div className="flex-1  break-all ">
-        <h2>{JSON.stringify(session?.user)}</h2>
+        <h2>Rajout ultérieur</h2>
       </div>
     </>
   );

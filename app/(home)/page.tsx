@@ -6,7 +6,7 @@ import { Post } from "../src/features/post/Post";
 import Utils from "./Utils";
 
 
-export default async function Page(){
+export default async function Home(){
   const session = await getAuthSession();
 
   const posts = await getPosts(session?.user._id);
@@ -29,7 +29,7 @@ export default async function Page(){
         ))}
       </div>
       <div className="flex-1  break-all ">
-        <h2>{JSON.stringify(session?.user)}</h2>
+        <h2>Rajout ultérieur</h2>
       </div>
     </>
   );
