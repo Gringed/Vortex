@@ -6,7 +6,7 @@ import { Post } from "../src/features/post/Post";
 import Utils from "./Utils";
 
 
-export default async function Home(){
+export default async function Page(){
   const session = await getAuthSession();
 
   const posts = await getPosts(session?.user._id);
