@@ -1,28 +1,33 @@
 import { getUserProfile } from "@/app/src/query/user.query";
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Metadata, ResolvedMetadata } from "next";
+import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { Profile } from "./Profile";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { followUser } from "./follow-action";
 import { Post } from "@/app/src/features/post/Post";
 import Utils from "@/app/(home)/Utils";
+import { ObjectId } from "mongodb";
 
-export const generateMetaData = async ({
+export async function generateMetadata({
   params,
 }: {
-  params: {
-    userId: string;
-  },
-  parent: ResolvedMetadata
-}): Promise<Metadata> => {
-  
+  params: { userId: string };
+}): Promise<Metadata> {
+  const user = await getUserProfile(params.userId);
+
+  if (!user) {
+    return {
+      title: "User not found",
+    };
+  }
+
   return {
-    title: `Test`
+    title: `${user.name} (@${user.username})`,
   };
-};
+}
 export default async function User({
   params,
 }: {
@@ -31,7 +36,10 @@ export default async function User({
   };
 }) {
   const session = await getAuthSession();
-  const user = await getUserProfile(params.userId);
+  let user: any;
+  if (ObjectId.isValid(params.userId)) {
+    user = await getUserProfile(params.userId);
+  }
 
   if (!user) {
     notFound();
@@ -47,7 +55,6 @@ export default async function User({
 
   const isCurrent = session?.user._id === user.id;
 
-  
   return (
     <>
       <div
@@ -82,7 +89,7 @@ export default async function User({
           </div>
         </div>
         <div className="divide-y divide-accent">
-          {user.posts.map((post) => (
+          {user.posts.map((post: any) => (
             <Post key={post.id} post={post} />
           ))}
         </div>

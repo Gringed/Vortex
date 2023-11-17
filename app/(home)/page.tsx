@@ -11,6 +11,7 @@ export const Home = async () => {
 
   const posts = await getPosts(session?.user._id);
 
+  
   return (
     <>
       <div
