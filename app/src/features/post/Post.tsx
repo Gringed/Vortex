@@ -56,7 +56,7 @@ export const Post = ({ post, parent, userId }: PostProps) => {
           </div>
           <div className="flex items-center gap-2 hover:text-purple-500 transition-all duration-300">
             <Link
-              href={`/posts/${post.id}/reply`}
+              href={`#`}
               className="custom-rounded bg-secondary hover:bg-accent text-foreground hover:text-purple-500 p-2 flex gap-1 items-center"
             >
               <Share style={{ transform: "scaleX(-1)" }} size={20} />
