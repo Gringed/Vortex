@@ -13,10 +13,6 @@ export const authOptions: (
 ) => AuthOptions = (req, res) => ({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
-    Google({
-      clientId: String(process.env.GOOGLE_CLIENT_ID),
-      clientSecret: String(process.env.GOOGLE_CLIENT_SECRET),
-    }),
     DiscordProvider({
       clientId: String(process.env.DISCORD_CLIENT_ID),
       clientSecret: String(process.env.DISCORD_CLIENT_SECRET),
@@ -44,11 +40,8 @@ export const authOptions: (
           createdAt: new Date(new Date().toISOString()),
         };
       },
-    }),
-    GitHubProvider({
-      clientId: String(process.env.GITHUB_ID),
-      clientSecret: String(process.env.GITHUB_SECRET),
-    }),
+    })
+    
   ],
   callbacks: {
     session({ session, user }) {

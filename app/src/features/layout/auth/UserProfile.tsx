@@ -19,7 +19,7 @@ export const UserProfile = async () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-        <Avatar className="w-12 h-12">
+        <Avatar size="sm" className="w-12 h-12">
         {session?.user?.image ? (
           <AvatarImage  src={session?.user?.image} alt={session?.user._id} />
         ) : null}

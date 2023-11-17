@@ -36,9 +36,8 @@ const main = async () => {
     });
     const post = {
       title: faker.lorem.sentence(20),
-      body: faker.lorem.sentence(randomWorldCount),
-      slug: faker.lorem.sentence(20),
-      authorId: users[randomUserIndex].id,
+      content: faker.lorem.sentence(randomWorldCount),
+      userId: users[randomUserIndex].id,
     };
 
     // eslint-disable-next-line no-await-in-loop
